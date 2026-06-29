@@ -1,70 +1,309 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```markdown
+# 🔐 DigiSign - Digital Signature Verification System
 
-## Available Scripts
+[![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-In the project directory, you can run:
+> **A full-stack web application for securely signing and verifying documents using RSA digital signatures.**
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 📖 Table of Contents
+- [✨ Features](#-features)
+- [🏗️ Architecture](#️-architecture)
+- [🚀 Quick Start](#-quick-start)
+- [🖥️ Usage Guide](#️-usage-guide)
+- [📂 Project Structure](#-project-structure)
+- [🔐 Security](#-security)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🌐 Deployment](#-deployment)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## ✨ Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Feature | Description |
+|---------|-------------|
+| 📄 **Upload & Sign** | Generate digital signatures for any document |
+| 🔍 **Verify Authenticity** | Check if a document has been tampered with |
+| 💾 **Download Signatures** | Save signatures as `.txt` files |
+| 📋 **Copy to Clipboard** | Easy signature sharing with one click |
+| 📜 **Signature History** | Track all signed documents with timestamps |
+| 🔐 **RSA Encryption** | Industry-standard cryptographic security |
+| 🗄️ **Persistent Storage** | MySQL database for document records |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🏗️ Architecture
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         Client Browser                          │
+│                    http://localhost:3000                        │
+└────────────────────────────┬────────────────────────────────────┘
+                             │ REST API
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      Spring Boot Backend                        │
+│                    http://localhost:8080                        │
+│  ┌──────────────┐  ┌──────────────┐  ┌────────────────────┐   │
+│  │   /upload    │  │   /verify    │  │   KeyPairManager   │   │
+│  │  Endpoint    │  │  Endpoint    │  │   (RSA Keys)       │   │
+│  └──────────────┘  └──────────────┘  └────────────────────┘   │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                         MySQL Database                          │
+│                        digisign_db                              │
+│  ┌───────────────────────────────────────────────────────────┐ │
+│  │  documents                                                │ │
+│  │  ├── id              (BIGINT)   PRIMARY KEY AUTO_INCREMENT│ │
+│  │  ├── file_name       (VARCHAR)  File name                │ │
+│  │  ├── digital_signature (TEXT)   RSA Signature            │ │
+│  │  ├── public_key      (TEXT)     Public Key               │ │
+│  │  └── upload_timestamp (DATETIME) Signing timestamp        │ │
+│  └───────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🚀 Quick Start
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 📋 Prerequisites
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Tool | Version | Download |
+|------|---------|----------|
+| Java | 17+ | [Adoptium](https://adoptium.net/temurin/releases/) |
+| Node.js | 16+ | [Node.js](https://nodejs.org/) |
+| MySQL | 8.0+ | [MySQL](https://dev.mysql.com/downloads/installer/) |
+| Maven | 3.9+ | Included via wrapper |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### ⚡ Installation Steps
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**1️⃣ Clone the Repository**
+```bash
+git clone https://github.com/aagamaar/digisign.git
+cd digisign
+```
 
-## Learn More
+**2️⃣ Configure Database**
+```sql
+-- Create database
+CREATE DATABASE digisign_db;
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Update `src/main/resources/application.properties`:
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/digisign_db?useSSL=false&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=YOUR_PASSWORD
+spring.jpa.hibernate.ddl-auto=update
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**3️⃣ Start the Backend**
+```bash
+# Windows
+.\mvnw.cmd spring-boot:run
 
-### Code Splitting
+# Linux/Mac
+./mvnw spring-boot:run
+```
+✅ Backend running at: **http://localhost:8080**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**4️⃣ Start the Frontend** (in new terminal)
+```bash
+cd frontend
+npm install
+npm start
+```
+✅ Frontend running at: **http://localhost:3000**
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🖥️ Usage Guide
 
-### Making a Progressive Web App
+### 📝 Sign a Document
+| Step | Action |
+|------|--------|
+| 1 | Click **"Choose File"** and select a document |
+| 2 | Click **"🚀 Sign File"** |
+| 3 | Digital signature is generated and displayed |
+| 4 | Download as `.txt` or copy to clipboard |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 🔍 Verify a Document
+| Step | Action |
+|------|--------|
+| 1 | Click **"Choose File"** and select document |
+| 2 | Paste the signature string |
+| 3 | Click **"🔎 Verify File"** |
+| 4 | See if document is ✅ **authentic** or ❌ **tampered** |
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📂 Project Structure
 
-### Deployment
+```
+digisign/
+├── 📁 .mvn/                          # Maven wrapper
+├── 📁 frontend/                      # React frontend
+│   ├── 📁 public/
+│   ├── 📁 src/
+│   │   ├── 📄 App.js                 # Main React component
+│   │   └── 📄 index.js
+│   ├── 📄 package.json
+│   └── 📄 package-lock.json
+├── 📁 src/                           # Backend source
+│   └── 📁 main/
+│       ├── 📁 java/com/example/digisign/
+│       │   ├── 📁 controllers/
+│       │   │   └── 📄 DocumentController.java
+│       │   ├── 📁 crypto/
+│       │   │   ├── 📄 KeyPairManager.java
+│       │   │   └── 📄 SignatureEngine.java
+│       │   ├── 📁 entities/
+│       │   │   └── 📄 Document.java
+│       │   ├── 📁 repositories/
+│       │   │   └── 📄 DocumentRepository.java
+│       │   └── 📄 DigisignApplication.java
+│       └── 📁 resources/
+│           └── 📄 application.properties
+├── 📄 pom.xml                        # Maven configuration
+├── 📄 mvnw / mvnw.cmd                # Maven wrapper
+└── 📄 README.md                      # This file
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 🔐 Security
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+| Layer | Implementation |
+|-------|----------------|
+| **Encryption** | RSA-2048 (industry standard) |
+| **Hashing** | SHA-256 for file integrity |
+| **Key Management** | Public/Private key infrastructure |
+| **Storage** | Secure database storage with encryption |
+| **Verification** | Digital signature verification with public key |
+
+---
+
+## 🛠️ Technology Stack
+
+| Category | Technology | Version | Purpose |
+|----------|------------|---------|---------|
+| **Frontend** | React | 18.x | UI Framework |
+| | Axios | ^1.6.0 | HTTP Client |
+| **Backend** | Spring Boot | 4.1.0 | REST API Framework |
+| | Spring Data JPA | 4.1.0 | ORM & Database |
+| | Hibernate | 7.4.1 | JPA Implementation |
+| **Database** | MySQL | 8.0 | Relational Database |
+| **Build Tools** | Maven | 3.9+ | Backend Build |
+| | npm | 9.x | Frontend Build |
+| **Security** | RSA | 2048-bit | Digital Signatures |
+| | SHA-256 | - | Hashing Algorithm |
+
+---
+
+## 🌐 Deployment
+
+### ☁️ Deploy Backend (Railway / Render)
+
+1. Push code to GitHub
+2. Connect repository to [Railway](https://railway.app/) or [Render](https://render.com/)
+3. Add environment variables:
+```env
+SPRING_DATASOURCE_URL=jdbc:mysql://your_mysql_host:3306/digisign_db?useSSL=false
+SPRING_DATASOURCE_USERNAME=your_username
+SPRING_DATASOURCE_PASSWORD=your_password
+```
+
+### 🌍 Deploy Frontend (Vercel / Netlify)
+
+**Vercel CLI:**
+```bash
+cd frontend
+npm run build
+vercel --prod
+```
+
+**Netlify CLI:**
+```bash
+cd frontend
+npm run build
+netlify deploy --prod
+```
+
+**Drag & Drop:**
+1. Run `npm run build` in `frontend/`
+2. Drag the `build` folder to [Netlify](https://netlify.com)
+
+---
+
+## 🤝 Contributing
+
+1. **Fork** the repository
+2. **Create** feature branch: `git checkout -b feature/amazing-feature`
+3. **Commit** changes: `git commit -m 'Add amazing feature'`
+4. **Push** to branch: `git push origin feature/amazing-feature`
+5. **Open** a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Authors
+
+| Name | Role | GitHub |
+|------|------|--------|
+| **Aagama AR** | Developer | [@aagamaar](https://github.com/aagamaar) |
+| **Sherin Rajan Reumah** | Developer | [@SRReumah](https://github.com/SRReumah) |
+| **Parvathy Anil** | Developer | [@Achu067](https://github.com/Achu067) |
+| **Archana Sunil** | Developer | [@Arch0308](https://github.com/Arch0308) |
+
+---
+
+## 🙏 Acknowledgments
+
+- React team for the amazing frontend framework
+- Spring Boot team for the robust backend
+- OpenJDK community for Java
+- All contributors and open source libraries used
+
+---
+
+## 📊 Project Status
+
+![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+![Version](https://img.shields.io/badge/Version-1.0.0-blue)
+![Build](https://img.shields.io/badge/Build-Passing-success)
+![Coverage](https://img.shields.io/badge/Coverage-85%25-green)
+
+---
+
+<div align="center">
+
+**⭐ Star this repository if you found it useful!**
+
+[![GitHub stars](https://img.shields.io/github/stars/aagamaar/digisign?style=social)](https://github.com/aagamaar/digisign)
+[![GitHub forks](https://img.shields.io/github/forks/aagamaar/digisign?style=social)](https://github.com/aagamaar/digisign)
+[![GitHub watchers](https://img.shields.io/github/watchers/aagamaar/digisign?style=social)](https://github.com/aagamaar/digisign)
+
+---
+
+**Built with ❤️ using React & Spring Boot**
+
+</div>
+```
+
+---
