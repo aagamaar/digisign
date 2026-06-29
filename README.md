@@ -1,5 +1,3 @@
-
-```markdown
 # 🔐 DigiSign - Digital Signature Verification System
 
 [![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
