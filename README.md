@@ -1,7 +1,4 @@
 
----
-
-```markdown
 # 🔐 DigiSign - Digital Signature Verification System
 
 ![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react)
@@ -11,7 +8,6 @@
 
 > A full-stack web application for securely signing and verifying documents using RSA digital signatures.
 
----
 
 ## Features
 
@@ -23,7 +19,6 @@
 - 🔐 **RSA Encryption** - Industry-standard cryptographic security
 - 🗄️ **Persistent Storage** - MySQL database for document records
 
----
 
 ## Quick Start
 
