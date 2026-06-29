@@ -162,4 +162,3 @@ MIT License
 ---
 
 **Built with ❤️ using React & Spring Boot**
-```

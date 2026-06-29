@@ -4,13 +4,14 @@ import axios from 'axios';
 function App() {
   // ========== ALL STATE VARIABLES ==========
   const [selectedFile, setSelectedFile] = useState(null);
-  const [fileName, setFileName] = useState(''); // NEW: For showing file name
+  const [fileName, setFileName] = useState('');
   const [signature, setSignature] = useState('');
+  const [publicKey, setPublicKey] = useState(''); // ← ADDED!
   const [status, setStatus] = useState('idle');
   const [message, setMessage] = useState('');
   const [verifyFile, setVerifyFile] = useState(null);
   const [verifySignatureInput, setVerifySignatureInput] = useState('');
-  const [history, setHistory] = useState([]); // NEW: For signature history
+  const [history, setHistory] = useState([]);
 
   // ========== FUNCTION 1: UPLOAD & SIGN ==========
   const handleUpload = async () => {
@@ -33,11 +34,14 @@ function App() {
       );
 
       const returnedSignature = response.data.signature;
+      const returnedPublicKey = response.data.publicKey; // ← ADDED!
+      
       setSignature(returnedSignature);
+      setPublicKey(returnedPublicKey); // ← ADDED!
+      
       setStatus('success');
       setMessage('✅ File signed successfully! Use the buttons below to save or copy the signature.');
       
-      // NEW: Add to history
       setHistory([...history, { 
         file: fileName, 
         signature: returnedSignature, 
@@ -58,12 +62,18 @@ function App() {
       return;
     }
 
+    if (!publicKey) {
+      alert('No public key available. Please sign a file first!');
+      return;
+    }
+
     setStatus('loading');
     setMessage('🔍 Checking file authenticity...');
 
     const formData = new FormData();
     formData.append('file', verifyFile);
     formData.append('signature', verifySignatureInput);
+    formData.append('publicKey', publicKey); // ← NOW WORKS!
 
     try {
       const response = await axios.post(
@@ -108,18 +118,18 @@ function App() {
       });
   };
 
-  // ========== FUNCTION 5: CLEAR ALL (NEW!) ==========
+  // ========== FUNCTION 5: CLEAR ALL ==========
   const clearAll = () => {
     setSelectedFile(null);
     setFileName('');
     setSignature('');
+    setPublicKey(''); // ← ADDED!
     setStatus('idle');
     setMessage('');
     setVerifyFile(null);
     setVerifySignatureInput('');
-    // Optional: keep or clear history
-    // setHistory([]);
   };
+
 
   // ========== THE ACTUAL SCREEN ==========
   return (
