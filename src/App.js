@@ -25,9 +25,9 @@ function App() {
 
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/documents/upload',
+        "https://digisign-pi.vercel.app/",
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        { headers: { "Content-Type": "multipart/form-data" } },
       );
 
       const returnedSignature = response.data.signature;
