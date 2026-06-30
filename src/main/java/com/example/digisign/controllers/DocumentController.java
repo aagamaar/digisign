@@ -31,9 +31,6 @@ import java.util.Map;
         "https://digisign-pi.vercel.app",          // Production (NO trailing slash!)
         "https://your-vercel-app.vercel.app"       // For other deployments
     },
-    allowedMethods = {"GET", "POST", "OPTIONS"},
-    allowedHeaders = "*",
-    allowCredentials = "true",
     maxAge = 3600
 )
 public class DocumentController {

@@ -57,3 +57,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+cat >> .gitignore << 'EOF'
+# Never commit these files!
+src/main/resources/application.properties
+src/main/resources/application-local.properties
+.env
+.env.local
+*.key
+*.pem
+EOF
