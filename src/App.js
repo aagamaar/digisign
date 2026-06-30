@@ -25,9 +25,9 @@ function App() {
 
     try {
       const response = await axios.post(
-        "https://digisign-pi.vercel.app/api/documents/upload",
+        'http://localhost:8080/api/documents/upload',
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } },
+        { headers: { 'Content-Type': 'multipart/form-data' } }
       );
 
       const returnedSignature = response.data.signature;
@@ -57,9 +57,9 @@ function App() {
 
     try {
       const response = await axios.post(
-        "https://digisign-pi.vercel.app/api/documents/verify",
+        'http://localhost:8080/api/documents/verify',
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } },
+        { headers: { 'Content-Type': 'multipart/form-data' } }
       );
 
       if (response.data.valid === true) {
