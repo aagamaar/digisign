@@ -13,8 +13,8 @@
 Watch the full demo of DigiSign in action:
 
 [![alt text](screenshot1-1.png)](https://youtu.be/Ib3VkGDofJI)
-
-*Click the image above to watch the demo video.*
+[![alt text](screenshot2-1.png)](https://youtu.be/Ib3VkGDofJI)
+*Click the images above to watch the demo video.*
 
 ## Features
 
