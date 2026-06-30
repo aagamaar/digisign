@@ -12,7 +12,7 @@
 
 Watch the full demo of DigiSign in action:
 
-[![alt text](<../Screenshot 2026-06-30 012939.png>)](https://youtu.be/Ib3VkGDofJI)
+[![alt text](screenshot1-1.png)](https://youtu.be/Ib3VkGDofJI)
 
 *Click the image above to watch the demo video.*
 
